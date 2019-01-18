@@ -3,7 +3,60 @@ var, let, const
 */
 
 
+
+/*What is hoisting? How does it work?
+Ans:
+
+For eg:
+
+var a = "show";
+var b = "me";
+var c = "magic"
+
+console.log(d);
+var d;
+
+Above code will run without ERROR but d is after console.log !! and it will still show "undefined"
+This shows that when a variable is declared it will be hoisted on top of the code due to this hoisting.
+
+Again:
+var a = "show";
+var b = "me";
+var c = "magic"
+
+console.log(d);
+var d = 4;
+
+Above code will run without error, but d is after console.log and it will still show "undefined"
+Here it does not show value 4 as hoisting will only hoist the declaration on top of the code.
+
+Again:
+var a = "show";
+var b = "me";
+var c = "magic"
+
+d = 4;
+
+console.log(d);
+var d;
+
+Above code now will show the value 4 not undefined as the declartion is already hoisted on top of the code 
+and d is assigned to 4 before console.log so now console.log(d) knows the value so it prints 4.
+
+Therefore, Hoisting in javascript means that all the declaration will be hoisted on top of the code.
+Hoisting is also done for named functions, etc.
+*/
+
+
+
+
+
+
+
+
 /*
+---------------------------------------------------------------
+
 1. use case of var:
 
 Should be used for global declaration.
