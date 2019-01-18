@@ -93,7 +93,7 @@ function saySomethingForVar() {
         console.log("Count Changed to 0");
         globalCount = 0;
     }
-    console.log("outside the scope: "+ name);//name is still accessable which is not good.
+    console.log("outside the scope: "+ name);//name is still accessable which is not good, mark it as comment
 }
 saySomethingForVar(); 
 
