@@ -127,6 +127,7 @@ console.log(timeAdder(20,"hours",4,"hours"));
 console.log(timeAdder(1,"day",24,"hours"));
 console.log(timeAdder(2,"minutes",10,"hours"));
 
+//inputs are invalid or impossible, it should return false
 //Use below to check for return false!!:
 
 // console.log(timeAdder( {}, "seconds",{}, "seconds"));
