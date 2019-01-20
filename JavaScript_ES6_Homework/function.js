@@ -48,6 +48,7 @@ const checkChocolate = (cakeArr) => {
 //function exp to Check all the cakes we have and return the actual flavor
 //1. An array of all cake possibilities.
 //2. A boolean representing whether or not the cake is chocolate.
+//It returns the string indicating actual flavor of the cake
 const checkAllCakes = (cakeArr, checkChoco) => {
     checkChoco.forEach((n, i) => {
         if(n){
