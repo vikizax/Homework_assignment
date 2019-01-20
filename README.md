@@ -6,3 +6,4 @@ JavaScript:
 2. Homework Assignment 2: variables.js
 3. Homework Assignment 3: logical.js
 4. Homework Assignment 4: function.js
+5. Homework Assignment 5: switch.js
