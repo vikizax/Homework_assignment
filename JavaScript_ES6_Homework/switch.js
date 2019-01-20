@@ -56,7 +56,6 @@ const timeAdder = (value1, label1, value2, label2) => {
    
     //check for invalid input
     if((typeof value1 !== "number")||(typeof value2 !== "number")){
-        console.log("I am here");
         result = false;
     } else {
         //check for plural or singular
