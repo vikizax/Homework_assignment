@@ -127,9 +127,9 @@ console.log(timeAdder(20,"hours",4,"hours"));
 console.log(timeAdder(1,"day",24,"hours"));
 console.log(timeAdder(2,"minutes",10,"hours"));
 
-//Use below to check error !!:
+//Use below to check for return false!!:
 
-// console.log(timerAdder( {}, "seconds",{}, "seconds"));
+// console.log(timeAdder( {}, "seconds",{}, "seconds"));
 // console.log(timeAdder(5,"hour",5,"minutes"));
 // console.log(timeAdder(false,false,5,"minutes"));
 // console.log(timeAdder({},"days",5,"minutes"));
