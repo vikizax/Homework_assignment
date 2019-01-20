@@ -59,15 +59,3 @@ const checkAllCakes = (cakeArr, checkChoco) => {
     })
 }
 checkAllCakes(cakes, checkChocolate(cakes));
-
-
-
-
-
-
-
- /*
-This cake is either vanilla or chocolate.
-This cake is not chocolate.
-Therefore, this cake is vanilla.
-*/
