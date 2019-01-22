@@ -1,0 +1,88 @@
+<!--  
+Homework Assignment #7 
+The DOM
+-->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>The DOM</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Style tag-->
+    <style>
+        
+        html {
+            height: 100%;
+        }
+        /* default div style */
+        div {
+            height: 125px;
+            width: 225px;
+            margin: 10px;
+        }
+
+        #rectangleWrapper {
+            padding: 50px 50px 0 50px;
+            height: 100%;
+            width: 100%;
+        }
+
+    </style>
+  </head>
+  <body>
+      <h1>The DOM</h1>
+      <h2>This page has 10 rectangles created with javascript!</h2>
+
+      <!-- Javascript tag -->
+      <script> 
+          //global values
+          //for <body>
+          const htmlBody = document.querySelector("body");
+          //for containing element <div>
+          const container = document.createElement("div");
+          //setting id of containing element
+          container.id = "rectangleWrapper";
+          //array for colors in hex value
+          const colorArr = ["#b18f10", "#b564d6", "#1d3400", "#3ec42d", "#f26854", "#23156a", "#4f3da6", "#5288cd", "#a0a61c", "#daddc4"];
+          
+          //Function exp to setup rectangle color, id and appending it to the containing element <div>
+          const setupRectangle = (arr, el1, el2, i, contElement) => {
+              //setting up color for rectangle
+              el1.style.backgroundColor = arr[i];
+              //setting up unique id for rectangle
+              el1.id = "rect" + i;
+              //setting up color text 
+              el2.innerText = arr[i];
+              //printing the unique id
+              console.log(el1.id);
+              //adding same class for each rectangle
+              el1.classList.add("rectangle");
+              //appending rectangle to the contaning element <div>
+              contElement.appendChild(el1);
+              //appending color text <p> to the containing element <div>  
+              contElement.appendChild(el2);  
+          }
+          //Function exp to create the rectangle
+          const createSimilarRectangles = (n, color, wrapper)=> {
+                //loop to create the element
+                for(let i = 0; i < n; i++ ) {   
+                    //creating new rectangle <div> element
+                    const newRect = document.createElement("div");
+                    //creating new <p> to hold text of color of the above rectangle
+                    const colorP = document.createElement("p");
+                    //calling setupRectangle to set color, unique id, print id, color text, same class and append them
+                    setupRectangle(color, newRect, colorP, i, wrapper);
+                }           
+            }
+
+          console.log("Here are the rectangle IDs: ");  
+          //create 10 rectangle
+          createSimilarRectangles(10, colorArr, container);
+          //appending the containing element to the body
+          htmlBody.appendChild(container);
+      </script>
+  </body>
+</html>
