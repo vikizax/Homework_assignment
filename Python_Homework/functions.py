@@ -30,6 +30,7 @@ def printAll():
     print("Genre:", genre())
     print("I recommend this song:", recommend())
 
+# calling printAll function
 printAll()
 
 
