@@ -4,34 +4,32 @@ Functions
 Prints the details of the song using functions
 """
 
-# name of the song
-SongName = "7 Years"
+# returns name of the song
+def songName():
+    SongName = "7 Years"
+    return SongName
+    
+# returns name of the artist 
+def artist():
+    Artist = "Lukas Graham"
+    return Artist
+# returns song genre 
+def genre():
+    Genre = "Soul-pop"
+    return Genre
+    
+# returns recommendation boolean
+def recommend():
+    WillRecommend = True
+    return WillRecommend
 
-# song artist
-Artist = "Lukas Graham"
+# it will call the the fuctions and print the values returned
+def printAll():
+    print("Song Name:", songName())
+    print("Artist:", artist())
+    print("Genre:", genre())
+    print("I recommend this song:", recommend())
 
-# genre of the song
-Genre = "Soul-pop"
+printAll()
 
-# recommend in boolean
-WillRecommend = True
-
-# get the name of the song and print it
-def songName(Name):
-    print("Song Name:", Name)
-# get the name of the artist and print it
-def artist(NameArtist):
-    print("Artist:", NameArtist)
-# get the song genre and print it
-def genre(SongGenre):
-    print("Genre:", SongGenre)
-# get the recommendation boolean and print it
-def recommend(check):
-    print("I recommend this song:", check)
-
-# calling the functions
-songName(SongName)
-artist(Artist)
-genre(Genre)
-recommend(WillRecommend)
 
