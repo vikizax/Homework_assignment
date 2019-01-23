@@ -6,16 +6,16 @@ Print the details of my favorit song
 """
 
 # name of the song
-song_name = "7 Years"
+SongName = "7 Years"
 
 # song artist
-artist = "Lukas Graham"
+Artist = "Lukas Graham"
 
 # genre of the song
-genre = "Soul-pop"
+Genre = "Soul-pop"
 
 # song duration
-duration_in_sec = 239.0
+DurationInSec = 239.0
 
 # release date of song as a class
 class ReleaseDateOfSong:
@@ -26,10 +26,10 @@ class ReleaseDateOfSong:
 date = ReleaseDateOfSong()
 
 # printing the details
-print("Song Name: ", song_name)
-print("Artist Name: ", artist)
-print("Genre: ", genre)
-print("Duration: ", duration_in_sec, "seconds")
+print("Song Name: ", SongName)
+print("Artist Name: ", Artist)
+print("Genre: ", Genre)
+print("Duration: ", DurationInSec, "seconds")
 print("Release Date: ", date.day, date.month, date.year)
 
 
