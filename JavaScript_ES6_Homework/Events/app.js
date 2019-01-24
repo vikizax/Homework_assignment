@@ -41,9 +41,9 @@ const resetAll = () => {
 const displayWinner = (n)=> {
     setTimeout(()=> {
         if(n === 0) {
-            alert("Player One Wins the Game!");
+            alert("X has won!");
         } else if(n === 1) {
-            alert("Player Two Wins the Game!");
+            alert("O has won!");
         } else{
             alert("Cats game!");     
         }
