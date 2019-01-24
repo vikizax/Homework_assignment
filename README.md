@@ -10,7 +10,7 @@ JavaScript:
 5. Homework Assignment 5: switch.js
 6. Homework Assignment 6: loops.js
 7. Homework Assignment 7: dom.html
-
+8. Homework Assignment 8: Events/app (Tic-Tac-Toe Game)
 -----------------------------------------------
 Python:
 1. Homework Assignment 1: main.py
