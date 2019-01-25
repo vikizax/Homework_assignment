@@ -2,7 +2,7 @@
 Homework Assignment #4
 Lists
 """
-# global variabls
+# global variables
 myUniqueList = []
 myLeftovers = []
 
