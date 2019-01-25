@@ -16,3 +16,4 @@ Python:
 1. Homework Assignment 1: main.py
 2. Homework Assignment 2: functions.py
 3. Homework Assignment 3: if.py
+4. Homework Assignment 4: lists.py
