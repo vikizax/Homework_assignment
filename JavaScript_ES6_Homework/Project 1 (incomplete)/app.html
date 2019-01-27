@@ -77,7 +77,7 @@
           </div>         
           <!-- User Account Settings -->
           <div id="accountSetting" class="hide">
-              <form >
+              <!-- <form >
                 <div class="form-group">
                   <label for="">First Name</label>
                   <input type="text" id="" class="form-control" placeholder="First name" required>
@@ -95,9 +95,9 @@
                   <input type="password" class="form-control" id="" placeholder="Password" required>
                 </div>
                 <div class="form-group text-center">
-                  <button type="submit" >Sign-up</button>
+                  <button type="submit">Sign-up</button>
                 </div>
-              </form>
+              </form> -->
           </div>
 
           <!-- User To-Do list -->
@@ -118,6 +118,31 @@
             <button id="btnAccount" class="btn btn-outline-success ml-auto" type="button">Account Settings</button>
             <button id="btnLogOut" class="btn btn-outline-danger ml-2" type="button">Log Out</button>
         </nav>
+        <div class="container">
+          <ul class="nav nav-tabs mt-4">
+              <li id="dashCurrentToDo" class="nav-item">
+                  <a class="nav-link active" href="#">Todo Lists</a>
+              </li>
+              <li id="dashCreateToDo" class="nav-item">
+                  <a class="nav-link" href="#">Create New To-Do</a>
+              </li>
+          </ul>
+        <div id="userCurrentList">
+          <ul id="userList" class="list-group">
+              <li id="listEmptyMsg" class="list-group-item mt-4 border-bottom-0">No List Found</li>
+          </ul>
+        </div>
+        <div id="createToDoMenu" class="hide">
+            <ul class="nav nav-pills mt-2 justify-content-end">
+                <li id="" class="nav-item ">
+                    <a class="nav-link active" href="#">+</a>
+                </li>
+                <li id="" class="nav-item">
+                    <a class="nav-link" href="#">...</a>
+                </li>
+            </ul>
+        </div>
+        </div>
       </div> 
 
     <!-- Script Tag -->

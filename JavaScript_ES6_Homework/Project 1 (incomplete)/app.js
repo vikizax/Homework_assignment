@@ -4,6 +4,7 @@ let userKey = [];
 //jumbotron
 const jumbotron = document.querySelector(".jumbotron");
 
+//note- use class hide to hide the selection
 //statupPage
 const startUp = document.getElementById("startUp");
 const btnLog = startUp.querySelector("#btnLog");
@@ -32,13 +33,17 @@ const sEmailHelp = mySignUpForm.querySelector("#sEmailHelp");
 const sPassHelp = mySignUpForm.querySelector("#sPassHelp");
 const sCheckHelp = mySignUpForm.querySelector("#sCheckHelp");
 
+//note- use class active to show them as active 
 //dashboard page
 const dashboard = document.getElementById("dashboard");
 const btnAccount = dashboard.querySelector("#btnAccount");
 const btnLogOut = dashboard.querySelector("#btnLogOut");
 const navbarBrand = dashboard.querySelector("#userStats");
-
-
+const listEmptyMsg = dashboard.querySelector("#listEmptyMsg");
+const createToDoMenu = dashboard.querySelector("#createToDoMenu");
+const dashCreateToDo = dashboard.querySelector("#dashCreateToDo a");
+const dashCurrentToDo = dashboard.querySelector("#dashCurrentToDo a");
+const userCurrentList = dashboard.querySelector("#userCurrentList");
 
 // Function Exp to bring up logIn
 const logInPage =  () => {
@@ -80,7 +85,6 @@ const uniqueMailCheck = (mail)=> {
 }
 
 
-
 // Function exp to bring up dashboard
 const dashboardPage = ()=> {
     signUp.classList.add("hide");
@@ -97,6 +101,7 @@ const startUpPage = () => {
     jumbotron.classList.remove("hide");
     startUp.classList.remove("hide");
     dashboard.classList.add("hide");
+    userKey.pop();
 }
 
 //adding event listener to the logout button
@@ -284,10 +289,30 @@ const checkUserLogIn = (e) => {
     }
 }
 
-
 // adding event listener to the login form
 myLogInForm.addEventListener("submit", checkUserLogIn);
 
 
+//Fucntion exp to bring up createToDoMenu
+const createToDoMenuPage = () => {
+    dashCreateToDo.classList.add("active");
+    dashCurrentToDo.classList.remove("active");
+    userCurrentList.classList.add("hide");
+    createToDoMenu.classList.remove("hide");
+
+}
+
+//adding event listener to dashboard create New To-Do
+dashCreateToDo.addEventListener("click", createToDoMenuPage);
 
 
+// Function exp to bring up userCurrentList
+const userCurrentListPage = () => {
+    dashCreateToDo.classList.remove("active");
+    dashCurrentToDo.classList.add("active");
+    userCurrentList.classList.remove("hide");
+    createToDoMenu.classList.add("hide");
+}
+
+//adding event listener to dashboard To-Do lists
+dashCurrentToDo.addEventListener("click", userCurrentListPage);
