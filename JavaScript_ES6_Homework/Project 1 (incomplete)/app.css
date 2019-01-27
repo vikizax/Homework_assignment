@@ -1,0 +1,39 @@
+html, body {
+    height: 100%;
+}
+
+h1 {
+    text-transform: uppercase;
+}
+
+ul {
+    max-width: 600px;
+    margin: 5px auto;
+}
+#logIn {
+    max-width: 600px;
+    margin: 5px auto;
+}
+
+#signUp {
+    max-width: 600px;
+    margin: 5px auto;
+}
+
+#accountSetting {
+    max-width: 600px;
+    margin: 5px auto;
+}
+
+.hide {
+    display: none;
+}
+
+.signUpBg {
+    background: green; 
+}
+
+.logInBg {
+    background: steelblue;
+}
+
