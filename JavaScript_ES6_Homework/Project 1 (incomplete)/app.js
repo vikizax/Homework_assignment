@@ -45,6 +45,23 @@ const dashCreateToDo = dashboard.querySelector("#dashCreateToDo a");
 const dashCurrentToDo = dashboard.querySelector("#dashCurrentToDo a");
 const userCurrentList = dashboard.querySelector("#userCurrentList");
 
+//note- use class hide to hide or display
+//account setting page
+const accountSetting = document.getElementById("accountSetting");
+const myAccountForm = accountSetting.querySelector("#myAccountForm");
+const aFName = myAccountForm.querySelector("#aFName");
+const aFNameHelp = myAccountForm.querySelector("#aFNameHelp");
+const aLName = myAccountForm.querySelector("#aLName");
+const aLNameHelp = myAccountForm.querySelector("#aLNameHelp");
+const aEmail = myAccountForm.querySelector("#aEmail");
+const aEmailHelp = myAccountForm.querySelector("#aEmailHelp");
+const aNPass = myAccountForm.querySelector("#aNPass");
+const aNPassHelp = myAccountForm.querySelector("#aNPassHelp");
+const aOPass = myAccountForm.querySelector("#aOPass");
+const aOPassHelp = myAccountForm.querySelector("#aOPassHelp");
+const btnCancel = myAccountForm.querySelector("#cancel");
+
+
 // Function Exp to bring up logIn
 const logInPage =  () => {
     startUp.classList.toggle("hide");
@@ -75,9 +92,10 @@ function createUserObj(fn, ln, ups){
 const uniqueMailCheck = (mail)=> {
     //get the item using key from the local strage
     const checkKey = localStorage.getItem(mail);
-    console.log(checkKey);
+    console.log("key" + checkKey);
     //checkthe value returned for the key is null or not
     if( checkKey === null) {
+        console.log("A");
         return true;
     }else {
         return false;
@@ -147,10 +165,10 @@ const getSignUpDetails = () => {
 
 
 // Fuction exp for form validation
-const validateSignUp = ()=> {
+const validateForm = ()=> {
     //5 means valid, 0 means invalid
     let validNum = 0;
-    
+
     //get values from the fields
     const userVFname = sFName.value;
     const userVLname = sLName.value;
@@ -233,15 +251,120 @@ const validateSignUp = ()=> {
 }
 
 
+// Function exp to validate the account setting form
+const validateAccSettingForm = () => {
+
+    //5 means valid, 0 means invalid
+    let validAccNum = 0;
+    
+    //get values from the fields
+    const userAFname = aFName.value;
+    const userALname = aLName.value;
+    const userAEmail = aEmail.value;
+    const userAOPassword = aOPass.value;
+    const userANPassword = aNPass.value;
+    
+    //remove hide from validation msg display
+    aFNameHelp.classList.remove("hide");
+    aLNameHelp.classList.remove("hide");
+    aEmailHelp.classList.remove("hide");
+    aOPassHelp.classList.remove("hide");
+    aNPassHelp.classList.remove("hide");
+    //validate user first name
+    if(userAFname === "") {
+        aFNameHelp.innerText = "Please enter the First Name";   
+    } else if((userAFname.length < 2) || (userAFname.length >20)) {
+        aFNameHelp.innerText = "Name length must be between 2 and 20";
+    } else if(!isNaN(userAFname)) {
+        aFNameHelp.innerText = "Name cannot be a number!";
+    } else {
+        //hide the validation msg for first name
+        aFNameHelp.classList.add("hide");
+        validAccNum += 1;
+    }
+
+    //validate user last name
+    if(userALname === "") {
+        aLNameHelp.innerText = "Please enter the First Name";   
+    } else if((userALname.length < 2) || (userALname.length >20)) {
+        aLNameHelp.innerText = "Name length must be between 2 and 20";
+    } else if(!isNaN(userALname)) {
+        aLNameHelp.innerText = "Name cannot be a number!";
+    } else {
+        //hide the validation msg for last name
+        aLNameHelp.classList.add("hide");
+        validAccNum += 1;
+    }
+
+    //validate user Email
+    if(userAEmail === "") {
+        aEmailHelp.innerText = "Please enter the email";
+    } else if(userAEmail.indexOf("@") <= 0) {
+        aEmailHelp.innerText = "Invalid position of '@' ";
+    } else if((userAEmail.charAt(userAEmail.length - 4) !== ".") && (userAEmail.charAt(userAEmail.length - 3) !== ".")) {
+        aEmailHelp.innerText = "Invalid position of '.' ";
+    }else {
+        //check if the new email is already used or not
+        const newEmail = uniqueMailCheck(userAEmail);
+        //if new mail is not already used
+        if(newEmail) {
+            //hide the validation msg for email
+            aEmailHelp.classList.add("hide");
+            validAccNum += 1;
+        } else {
+            //if the new mail provided already used by someone
+            alert("Email already used!");
+            aEmail.value = "";
+            aOPass.value = "";
+        }       
+    }
+
+    //creating user obj get the details from the localStorage
+    const accObj = JSON.parse(localStorage.getItem(userKey[0]));
+    //get the user password
+    const oldPass = accObj.password;
+
+    //check if the old password provide is correct 
+    if(userAOPassword === oldPass){
+        aOPassHelp.classList.add("hide");
+        validAccNum += 1;
+    } else {
+        if(userAOPassword === "") {
+            aOPassHelp.innerText = "Please enter the Password";
+        } else {
+            aOPassHelp.innerText = "Incorrect Password!";
+        }
+    }
+    // validate password
+    if(userANPassword === "") {
+        aNPassHelp.innerText = "Please enter the Password";
+    } else if(userANPassword.length <= 4 ) {
+        aNPassHelp.innerText = "Password length must be greater than 4";
+    } else {
+        //hide the validation msg for password
+        aNPassHelp.classList.add("hide");
+        validAccNum += 1;
+    } 
+
+    //check validAccNum to return true or false
+    if(validAccNum > 4) {
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
 //adding event listener to the signup form
 mySignUpForm.addEventListener("submit", (e)=> {
     //prevent default action of submit
     e.preventDefault();
     //validity check, true or false
-    const checkValid = validateSignUp();
+    //if 1 then mySignUpForm
+    const checkValid = validateForm();
     console.log(checkValid);
     if(checkValid){
-        getSignUpDetails(e);
+        getSignUpDetails();
     }
 });
 
@@ -316,3 +439,63 @@ const userCurrentListPage = () => {
 
 //adding event listener to dashboard To-Do lists
 dashCurrentToDo.addEventListener("click", userCurrentListPage);
+
+// FUnction exp to bring up myAccountForm
+const myAccountFormPage = () => {
+    accountSetting.classList.remove("hide");
+    dashboard.classList.add("hide");
+}
+
+// adding event listener to the btnAccount
+btnAccount.addEventListener("click", myAccountFormPage);
+
+// Function exp to update the user account details
+const updateAccountDetails = () => {
+
+    //get values from the fields
+    const userUFname = aFName.value;
+    console.log("name: " + userUFname);
+    console.log(typeof userUFname)
+    const userULname = aLName.value;
+    const userUEmail = aEmail.value;
+    const userUNPassword = aNPass.value;
+
+    //creating user obj get the details from the localStorage
+    const accObj = JSON.parse(localStorage.getItem(userKey[0]));
+    //deleting from localStorage
+    localStorage.removeItem(userKey[0]);
+    //updating details obtained from the account setting form
+    accObj.firstName = userUFname;
+    accObj.lastName = userULname;
+    accObj.password = userUNPassword;
+    //remove the old key
+    userKey.pop();
+    //store the updated details in the localStorage
+    const accObjString = JSON.stringify(accObj);
+    localStorage.setItem(userUEmail, accObjString);
+    //set the new key
+    userKey.push(userUEmail);
+    //reset the account setting form after update
+    myAccountForm.reset();
+    //hide the form after update 
+    accountSetting.classList.add("hide");
+    //send the user back to dashbord after update
+    dashboardPage();
+}
+//adding event listener to the myAccountForm
+myAccountForm.addEventListener("submit", (e) => {
+    //prevent default action of submit
+    e.preventDefault();
+    //validity check, true or false
+    const checkAValid = validateAccSettingForm();
+    // console.log("account valid " + checkAValid);
+    if(checkAValid){
+        updateAccountDetails();
+    }
+});
+
+//adding event listener to the cancel button in the account setting form
+btnCancel.addEventListener("click",()=> {
+    accountSetting.classList.add("hide");
+    dashboardPage();
+});
