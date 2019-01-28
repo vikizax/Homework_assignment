@@ -1,3 +1,8 @@
+"""
+Homework Assignment #5
+Basic Loops
+"""
+
 # function to check for prime
 def checkPrime(i):
     for n in range(2, i, 1):
