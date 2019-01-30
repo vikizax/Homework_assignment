@@ -35,6 +35,10 @@ ul {
     margin-right: 15px;
 }
 
+#userList {
+    text-transform: capitalize;
+}
+
 .hide {
     display: none;
 }

@@ -50,6 +50,7 @@ const toDoUndo = dashboard.querySelector("#toDoUndo");
 const toDoCreate = dashboard.querySelector("#toDoCreate");
 const listTodoItem = todo.querySelector("#listTodoItem");
 const toDoListName = createToDoMenu.querySelector("#toDoListName");
+const userList = userCurrentList.querySelector("#userList");
 
 //note- use class hide to hide or display
 //account setting page
@@ -111,6 +112,25 @@ const displayUserTodoList = () => {
     const displayObj = JSON.parse(localStorage(userKey[0]));
 }
 
+// Function exp to append the list name in the user created lists
+const appendListName = (obj, n)=> {
+    listEmptyMsg.classList.add("hide");
+    const currentList = userList;
+    if(n === 1){
+        const currentLi = document.createElement("li");
+        currentLi.className= "list-group-item";
+        currentLi.innerText = obj.todo[obj.todo.length-1].name;
+        currentList.appendChild(currentLi);
+    } else {
+        for(const prop of obj.todo){
+            const currentLin = document.createElement("li");
+            currentLin.className= "list-group-item";
+            currentLin.innerText = prop.name;
+            currentList.appendChild(currentLin);
+        }
+    }
+}
+
 // Function exp to bring up dashboard
 const dashboardPage = ()=> {
     signUp.classList.add("hide");
@@ -123,7 +143,7 @@ const dashboardPage = ()=> {
     jumbotron.classList.add("hide");
     const currentUserObj = JSON.parse(localStorage.getItem(userKey[0]));
     if(currentUserObj.todo !== undefined) {
-        listEmptyMsg.classList.add("hide");
+        appendListName(currentUserObj);
     }else {
         listEmptyMsg.classList.remove("hide");
     }
@@ -619,6 +639,8 @@ const createNewToDoList = () => {
         alert("List added!");
         //reset the fields
         resetCreateTodo();
+        //display the name in the user current to do lists
+        appendListName(todoObj, 1);
     }
 }
 
