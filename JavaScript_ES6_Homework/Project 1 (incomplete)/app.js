@@ -1,6 +1,6 @@
 // global
 let userKey = [];
-
+let toggle = 0;
 //jumbotron
 const jumbotron = document.querySelector(".jumbotron");
 
@@ -50,7 +50,14 @@ const toDoUndo = dashboard.querySelector("#toDoUndo");
 const toDoCreate = dashboard.querySelector("#toDoCreate");
 const listTodoItem = todo.querySelector("#listTodoItem");
 const toDoListName = createToDoMenu.querySelector("#toDoListName");
+const userCurrentListItemDisplay = dashboard.querySelector("#userCurrentListItemDisplay");
 const userList = userCurrentList.querySelector("#userList");
+const clickedUserCurrentList = dashboard.querySelector("#clickedUserCurrentList");
+const clickedListName = userCurrentListItemDisplay.querySelector("#clickedListName");
+const userCurrentListItem = userCurrentListItemDisplay.querySelector("#userCurrentListItem");
+const save = userCurrentListItemDisplay.querySelector("#save");
+const back = userCurrentListItemDisplay.querySelector("#back");
+const rename = userCurrentListItemDisplay.querySelector("#rename");
 
 //note- use class hide to hide or display
 //account setting page
@@ -94,6 +101,40 @@ function createUserObj(fn, ln, ups){
     this.password = ups;
 }
 
+//Function exp to reset createNewToDos
+const resetCreateTodo = () => {
+    //get the list
+    const parentRE = listTodoItem;
+    //hide the create button
+    toDoCreate.classList.add("hide");
+    //if there is child element remove it
+    while (parentRE.firstChild) {
+        parentRE.removeChild(parentRE.firstChild);
+    }
+    //reset the field taking name for todo list
+    toDoListName.value = "";
+}
+
+//Function exp to reset createNewToDos
+const resetCurrentTodo = () => {
+    //get the list
+    const parentRE = userList;
+    //if there is child element remove it
+    while (parentRE.firstChild) {
+        parentRE.removeChild(parentRE.firstChild);
+    }
+}
+
+//Function exp to reset userCurrentListItem
+const resetUserCurrentListItem = ()=> {
+    //get the list
+    const parentUE = userCurrentListItem;
+    //if there is child element remove it
+    while (parentUE.firstChild) {
+        parentUE.removeChild(parentUE.firstChild);
+    }
+}
+
 // Function exp to check for unique user Email 
 const uniqueMailCheck = (mail)=> {
     //get the item using key from the local strage
@@ -107,11 +148,46 @@ const uniqueMailCheck = (mail)=> {
     }
 }
 
-//Fucntion exp to display the user created list 
-const displayUserTodoList = () => {
-    const displayObj = JSON.parse(localStorage(userKey[0]));
+//Function exp to get the list itme of the clicked list
+const displayUserClickedListItem = (obj)=> {
+    clickedListName.value = obj.name;
+    for(const prop of obj.item) {
+        const setLi = document.createElement("li");
+        const setCheck = document.createElement("input");
+        setLi.innerText = prop;
+        setLi.className = "list-group-item";
+        setCheck.type = "checkbox";
+        setCheck.className = "float-right mt-1 check";
+        setCheck.id = "checkIt";
+        setLi.appendChild(setCheck);
+        userCurrentListItem.appendChild(setLi);
+    }
 }
 
+
+//Fucntion exp to display the user created list 
+const displayUserTodoList = (e) => {
+    userList.classList.add("hide");
+    userCurrentListItemDisplay.classList.remove("hide");
+    const displayObj = JSON.parse(localStorage.getItem(userKey[0]));
+    for(const prop of displayObj.todo) {
+        if(prop.name === e.target.innerHTML) {
+            displayUserClickedListItem(prop);
+            break;
+        }
+    }
+}
+
+// Function exp to add event listner to the li items created by js
+const addEventToCurrentListLi = ()=> {
+    //get all the li with id list created by js
+    const listAdd = document.querySelectorAll("#list");
+    //iterate the li items and add event listeners to them
+    for(const prop of listAdd){
+        //when a li(list name) is clicked display the items of that list 
+        prop.addEventListener("click", displayUserTodoList);
+    }
+}
 // Function exp to append the list name in the user created lists
 const appendListName = (obj, n)=> {
     listEmptyMsg.classList.add("hide");
@@ -119,22 +195,28 @@ const appendListName = (obj, n)=> {
     if(n === 1){
         const currentLi = document.createElement("li");
         currentLi.className= "list-group-item";
+        currentLi.id = "list";
         currentLi.innerText = obj.todo[obj.todo.length-1].name;
         currentList.appendChild(currentLi);
     } else {
         for(const prop of obj.todo){
             const currentLin = document.createElement("li");
             currentLin.className= "list-group-item";
+            currentLin.id = "list";
             currentLin.innerText = prop.name;
             currentList.appendChild(currentLin);
+
         }
     }
+    addEventToCurrentListLi();
 }
+
 
 // Function exp to bring up dashboard
 const dashboardPage = ()=> {
     signUp.classList.add("hide");
-    userCurrentList.classList.remove("hide")
+    userCurrentList.classList.remove("hide");
+    userList.classList.remove("hide");
     dashCurrentToDo.classList.add("active");
     dashCreateToDo.classList.remove("active");
     createToDoMenu.classList.add("hide");
@@ -156,7 +238,10 @@ const startUpPage = () => {
     startUp.classList.remove("hide");
     dashboard.classList.add("hide");
     resetCreateTodo();
+    resetCurrentTodo();
     userKey.pop();
+    resetUserCurrentListItem();
+    userCurrentListItemDisplay.classList.add("hide");
 }
 
 //adding event listener to the logout button
@@ -455,9 +540,10 @@ myLogInForm.addEventListener("submit", checkUserLogIn);
 const createToDoMenuPage = () => {
     dashCreateToDo.classList.add("active");
     dashCurrentToDo.classList.remove("active");
-    userCurrentList.classList.add("hide");
     createToDoMenu.classList.remove("hide");
     todo.classList.remove("hide");
+    userCurrentList.classList.add("hide");
+    resetUserCurrentListItem();
 }
 
 //adding event listener to dashboard create New To-Do
@@ -469,7 +555,10 @@ const userCurrentListPage = () => {
     dashCurrentToDo.classList.add("active");
     userCurrentList.classList.remove("hide");
     createToDoMenu.classList.add("hide");
+    userCurrentListItemDisplay.classList.add("hide");
+    userList.classList.remove("hide");
     todo.classList.add("hide");
+    resetUserCurrentListItem();
 }
 
 //adding event listener to dashboard To-Do lists
@@ -644,23 +733,57 @@ const createNewToDoList = () => {
     }
 }
 
-//Function exp to reset createNewToDos
-const resetCreateTodo = () => {
-    //get the list
-    const parentRE = listTodoItem;
-    //hide the create button
-    toDoCreate.classList.add("hide");
-    //if there is child element remove it
-    while (parentRE.firstChild) {
-        parentRE.removeChild(parentRE.firstChild);
-    }
-    //reset the field taking name for todo list
-    toDoListName.value = "";
-}
-
 //adding event listener to add todo list button in dashboard page
 toDoAdd.addEventListener("click", createNewToDos);
 //adding event listener to undo button in dashboard page
 toDoUndo.addEventListener("click", undoNewTodos);
 //adding event listener to the toDoCreate button in the dashboard
 toDoCreate.addEventListener("click", createNewToDoList);
+
+// Function exp to save the changes done to the existing list
+const saveChanges = () => {
+    if(!clickedListName.disabled) {
+        const changedName = clickedListName.value;
+        const checkChangedName = uniqueListName(changedName);
+    } else {
+        checkChangedName = true;
+    }
+    const oldObj = JSON.parse(localStorage.getItem(userKey[0]));
+    const ticked = userCurrentListItem.querySelectorAll("#checkIt");
+    const changeObj = {
+        state: []
+    };
+    if(checkChangedName) {
+        oldObj.todoComplete = [];
+        for(const prop of ticked){
+            changeObj.state.push(prop.checked);
+        }
+        oldObj.todoComplete.push(changeObj);
+        console.log(oldObj);
+    } else {
+        alert("List Name Already used");
+    }
+    console.log(changeObj.state);
+}
+
+
+//adding event listener to the back button in the userCurrentListItemDisplay
+back.addEventListener("click", userCurrentListPage);
+//adding event listener to the save button in the userCurrentListItemDisplay
+save.addEventListener("click", saveChanges);
+
+//adding event listener to the rename button in the userCurrentListItmenDisplay
+rename.addEventListener("click", ()=> {
+    if(toggle === 0) {
+        rename.classList.remove("btn-info");
+        rename.classList.add("btn-danger");
+        rename.innerText = "Cancel";
+        toggle = 1
+    } else {
+        rename.innerText = "Rename";
+        rename.classList.remove("btn-danger");
+        rename.classList.add("btn-info");
+        toggle = 0
+    }
+    clickedListName.toggleAttribute("disabled");
+});

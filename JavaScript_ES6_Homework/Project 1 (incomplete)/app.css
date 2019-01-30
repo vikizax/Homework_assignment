@@ -10,6 +10,7 @@ ul {
     max-width: 600px;
     margin: 5px auto;
 }
+
 #logIn {
     max-width: 600px;
     margin: 5px auto;
@@ -39,6 +40,15 @@ ul {
     text-transform: capitalize;
 }
 
+#userCurrentListItemDisplay {
+    max-width: 600px;
+    margin: 5px auto;
+}
+
+#userCurrentListItem li {
+    text-transform: capitalize;
+}
+
 .hide {
     display: none;
 }
@@ -49,5 +59,10 @@ ul {
 
 .logInBg {
     background: steelblue;
+}
+
+.check {
+    width: 20px;
+    height: 20px; 
 }
 
