@@ -37,7 +37,7 @@
                     <small id="lPassHelp" class="form-text text-danger hide"></small>
                   </div>
                   <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Log-in</button>
                   </div>
               </form>
           </div>
@@ -137,21 +137,25 @@
                   <a class="nav-link" href="#">Create New To-Do</a>
               </li>
           </ul>
-        <div id="userCurrentList">
-          <ul id="userList" class="list-group">
-              <li id="listEmptyMsg" class="list-group-item mt-4 border-bottom-0">No List Found</li>
-          </ul>
-        </div>
-        <div id="createToDoMenu" class="hide">
-            <ul class="nav nav-pills mt-2 justify-content-end">
-                <li id="" class="nav-item ">
-                    <a class="nav-link active" href="#">+</a>
-                </li>
-                <li id="" class="nav-item">
-                    <a class="nav-link" href="#">...</a>
-                </li>
+          <div id="userCurrentList" class="hide">
+            <ul id="userList" class="list-group">
+              <li id="listEmptyMsg" class="list-group-item mt-4 border-bottom-0 hide">No List Found</li>
             </ul>
-        </div>
+          </div>
+            <div id="createToDoMenu" class="hide">
+              <form class="form-inline">
+                <input type="text" class="form-control mb-2 mr-sm-2" id="toDoListName" placeholder="To-Do List Name">
+                <button type="button" id="toDoAdd" class="btn btn-info ml-auto mr-2 mb-2">Add To-do</button>
+                <button type="button" id="toDoUndo" class="btn btn-danger mb-2">Remove</button>
+              </form>
+            </div>
+            <!-- User To-Do list -->
+            <div id="todo" class="text-center hide">
+              <!-- <form action=""></form> -->
+                <ul id="listTodoItem" class="list-group">
+                </ul>
+                <button id="toDoCreate" class="btn btn-success mt-2 text-center hide">Create</button>
+            </div>
         </div>
       </div> 
 

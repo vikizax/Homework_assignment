@@ -44,6 +44,12 @@ const createToDoMenu = dashboard.querySelector("#createToDoMenu");
 const dashCreateToDo = dashboard.querySelector("#dashCreateToDo a");
 const dashCurrentToDo = dashboard.querySelector("#dashCurrentToDo a");
 const userCurrentList = dashboard.querySelector("#userCurrentList");
+const todo = dashboard.querySelector("#todo");
+const toDoAdd = dashboard.querySelector("#toDoAdd");
+const toDoUndo = dashboard.querySelector("#toDoUndo");
+const toDoCreate = dashboard.querySelector("#toDoCreate");
+const listTodoItem = todo.querySelector("#listTodoItem");
+const toDoListName = createToDoMenu.querySelector("#toDoListName");
 
 //note- use class hide to hide or display
 //account setting page
@@ -66,7 +72,6 @@ const btnCancel = myAccountForm.querySelector("#cancel");
 const logInPage =  () => {
     startUp.classList.toggle("hide");
     logIn.classList.toggle("hide");
-    
 }
 btnLog.addEventListener("click", logInPage);
 
@@ -92,25 +97,36 @@ function createUserObj(fn, ln, ups){
 const uniqueMailCheck = (mail)=> {
     //get the item using key from the local strage
     const checkKey = localStorage.getItem(mail);
-    console.log("key" + checkKey);
+
     //checkthe value returned for the key is null or not
     if( checkKey === null) {
-        console.log("A");
         return true;
     }else {
         return false;
     }
 }
 
+//Fucntion exp to display the user created list 
+const displayUserTodoList = () => {
+    const displayObj = JSON.parse(localStorage(userKey[0]));
+}
 
 // Function exp to bring up dashboard
 const dashboardPage = ()=> {
     signUp.classList.add("hide");
+    userCurrentList.classList.remove("hide")
+    dashCurrentToDo.classList.add("active");
+    dashCreateToDo.classList.remove("active");
+    createToDoMenu.classList.add("hide");
     dashboard.classList.remove("hide");
     logIn.classList.add("hide");
     jumbotron.classList.add("hide");
-    const currentUserObj = JSON.parse(localStorage.getItem(userKey[userKey.length - 1]));
-    console.log(currentUserObj);
+    const currentUserObj = JSON.parse(localStorage.getItem(userKey[0]));
+    if(currentUserObj.todo !== undefined) {
+        listEmptyMsg.classList.add("hide");
+    }else {
+        listEmptyMsg.classList.remove("hide");
+    }
     navbarBrand.innerText = "Welcome " + currentUserObj.firstName + "!";
 }
 
@@ -119,6 +135,7 @@ const startUpPage = () => {
     jumbotron.classList.remove("hide");
     startUp.classList.remove("hide");
     dashboard.classList.add("hide");
+    resetCreateTodo();
     userKey.pop();
 }
 
@@ -362,7 +379,6 @@ mySignUpForm.addEventListener("submit", (e)=> {
     //validity check, true or false
     //if 1 then mySignUpForm
     const checkValid = validateForm();
-    console.log(checkValid);
     if(checkValid){
         getSignUpDetails();
     }
@@ -378,7 +394,6 @@ const checkUserLogIn = (e) => {
     //get value for if user exist or not
     //if return false user exist
     const userExist = uniqueMailCheck(userLoginEmail);
-    console.log(userExist);
     //get password value
     const userLoginPass = lPass.value;
 
@@ -422,12 +437,11 @@ const createToDoMenuPage = () => {
     dashCurrentToDo.classList.remove("active");
     userCurrentList.classList.add("hide");
     createToDoMenu.classList.remove("hide");
-
+    todo.classList.remove("hide");
 }
 
 //adding event listener to dashboard create New To-Do
 dashCreateToDo.addEventListener("click", createToDoMenuPage);
-
 
 // Function exp to bring up userCurrentList
 const userCurrentListPage = () => {
@@ -435,6 +449,7 @@ const userCurrentListPage = () => {
     dashCurrentToDo.classList.add("active");
     userCurrentList.classList.remove("hide");
     createToDoMenu.classList.add("hide");
+    todo.classList.add("hide");
 }
 
 //adding event listener to dashboard To-Do lists
@@ -454,8 +469,6 @@ const updateAccountDetails = () => {
 
     //get values from the fields
     const userUFname = aFName.value;
-    console.log("name: " + userUFname);
-    console.log(typeof userUFname)
     const userULname = aLName.value;
     const userUEmail = aEmail.value;
     const userUNPassword = aNPass.value;
@@ -488,7 +501,6 @@ myAccountForm.addEventListener("submit", (e) => {
     e.preventDefault();
     //validity check, true or false
     const checkAValid = validateAccSettingForm();
-    // console.log("account valid " + checkAValid);
     if(checkAValid){
         updateAccountDetails();
     }
@@ -499,3 +511,134 @@ btnCancel.addEventListener("click",()=> {
     accountSetting.classList.add("hide");
     dashboardPage();
 });
+
+// Function exp to add new to-do
+const createNewToDos = () => {
+    //create new list element
+    const newTodo = document.createElement("li");
+    //set the class
+    newTodo.className = "list-group-item";
+    //create new input element
+    const newTodoInput = document.createElement("input");
+    //set the type as text field
+    newTodoInput.type = "text";
+    //show the create button
+    toDoCreate.classList.remove("hide");
+    //attach the newly created elements to it respective place
+    newTodo.appendChild(newTodoInput);
+    listTodoItem.appendChild(newTodo);
+}
+
+// Function exp to undo the createNewToDos
+const undoNewTodos = () => {
+    //get the list
+    const parentE = listTodoItem;
+    //remove the child if child is not null
+    if(parentE.lastChild !== null){
+        parentE.removeChild(parentE.lastChild);
+    }else {
+        //at last hide the create button
+        toDoCreate.classList.add("hide");
+    }
+}
+//Funciton exp to check for unique list name
+const uniqueListName = (n)=> {
+    //get the data for the user key from localStorage
+    const todoCheck = JSON.parse(localStorage.getItem(userKey[0]));
+    //check for n = 1
+    if(n !== 1) {
+        for(const prop of todoCheck.todo) {
+            //if the name matches return false
+            if(prop.name === n) {
+                return false;
+            }
+        }
+    }
+    //default return
+    return true;
+}
+
+// Function exp to create and save the to-do list
+const createNewToDoList = () => {
+    //use to check for update the localStorage or not
+    // 1 means update it, 2 for not
+    let updateFlag = 1;
+    //get all the input fields from all the li elements
+    const inputLi = listTodoItem.querySelectorAll("li input");
+    const todoObj = JSON.parse(localStorage.getItem(userKey[0]));
+    let addCheck;
+    if(todoObj.todo === undefined) {
+        todoObj.todo = [];
+        addCheck = uniqueListName(1);
+    }else {
+        addCheck = uniqueListName(toDoListName.value);
+    }
+    const obj = {
+        item:[]
+    };
+    //Only if there is 1 or more input fields
+    if(inputLi.length > 0) {
+        //loop thorough all the input fields
+        for(const prop of inputLi){
+            //check if not empty
+            if(prop.value !== "") {
+                //alert if the list name is not given alert
+                if(toDoListName.value === ""){
+                    alert("Give a name to your To-Do list!");
+                    break;
+                }else {
+                    //if the given list name is unique
+                    if(addCheck) {
+                        obj.name = toDoListName.value;
+                        obj.item.push(prop.value);
+
+                    }else {
+                        //change the flag to 0 for not meeting all the conditions
+                        updateFlag = 0;
+                        //alert
+                        alert("List name already exist! Add unique name!");
+                        break;
+                    }
+                }
+            }else {
+                updateFlag = 0;
+                alert("Add something in todo");
+                break;
+            }
+        }
+    }else {
+        updateFlag = 0;
+        alert("Add a todo before creating!");
+    }
+    //check if the all consdition satisfied(1), else false(0)
+    if(updateFlag) {
+        //update the localStoage
+        todoObj.todo.push(obj);
+        localStorage.setItem(userKey[0],JSON.stringify(todoObj));
+        //alert after success
+        alert("List added!");
+        //reset the fields
+        resetCreateTodo();
+    }
+}
+
+//Function exp to reset createNewToDos
+const resetCreateTodo = () => {
+    //get the list
+    const parentRE = listTodoItem;
+    //hide the create button
+    toDoCreate.classList.add("hide");
+    //if there is child element remove it
+    while (parentRE.firstChild) {
+        parentRE.removeChild(parentRE.firstChild);
+    }
+    //reset the field taking name for todo list
+    toDoListName.value = "";
+}
+
+//adding event listener to add todo list button in dashboard page
+toDoAdd.addEventListener("click", createNewToDos);
+//adding event listener to undo button in dashboard page
+toDoUndo.addEventListener("click", undoNewTodos);
+//adding event listener to the toDoCreate button in the dashboard
+toDoCreate.addEventListener("click", createNewToDoList);
