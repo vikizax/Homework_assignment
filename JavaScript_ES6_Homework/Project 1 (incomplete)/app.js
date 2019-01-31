@@ -1,6 +1,7 @@
 // global
 let userKey = [];
 let toggle = 0;
+const emptyLiMsg = document.createElement("li");
 //jumbotron
 const jumbotron = document.querySelector(".jumbotron");
 
@@ -39,7 +40,6 @@ const dashboard = document.getElementById("dashboard");
 const btnAccount = dashboard.querySelector("#btnAccount");
 const btnLogOut = dashboard.querySelector("#btnLogOut");
 const navbarBrand = dashboard.querySelector("#userStats");
-const listEmptyMsg = dashboard.querySelector("#listEmptyMsg");
 const createToDoMenu = dashboard.querySelector("#createToDoMenu");
 const dashCreateToDo = dashboard.querySelector("#dashCreateToDo a");
 const dashCurrentToDo = dashboard.querySelector("#dashCurrentToDo a");
@@ -190,7 +190,7 @@ const addEventToCurrentListLi = ()=> {
 }
 // Function exp to append the list name in the user created lists
 const appendListName = (obj, n)=> {
-    listEmptyMsg.classList.add("hide");
+    emptyLiMsg.classList.add("hide");
     const currentList = userList;
     if(n === 1){
         const currentLi = document.createElement("li");
@@ -205,7 +205,6 @@ const appendListName = (obj, n)=> {
             currentLin.id = "list";
             currentLin.innerText = prop.name;
             currentList.appendChild(currentLin);
-
         }
     }
     addEventToCurrentListLi();
@@ -227,7 +226,10 @@ const dashboardPage = ()=> {
     if(currentUserObj.todo !== undefined) {
         appendListName(currentUserObj);
     }else {
-        listEmptyMsg.classList.remove("hide");
+        // empty.classList.remove("hide");
+        emptyLiMsg.className = "list-group-item border-bottom-0";
+        emptyLiMsg.innerText = "No List Found";
+        userList.appendChild(emptyLiMsg);
     }
     navbarBrand.innerText = "Welcome " + currentUserObj.firstName + "!";
 }
@@ -742,17 +744,24 @@ toDoCreate.addEventListener("click", createNewToDoList);
 
 // Function exp to save the changes done to the existing list
 const saveChanges = () => {
+    let checkChangedName;
     if(!clickedListName.disabled) {
+        console.log("I am here A");
         const changedName = clickedListName.value;
-        const checkChangedName = uniqueListName(changedName);
+        checkChangedName = uniqueListName(changedName);
+        console.log(changedName);
+        console.log(checkChangedName);
     } else {
+        console.log("I am here B");
         checkChangedName = true;
+        console.log(checkChangedName);
     }
     const oldObj = JSON.parse(localStorage.getItem(userKey[0]));
     const ticked = userCurrentListItem.querySelectorAll("#checkIt");
     const changeObj = {
         state: []
     };
+
     if(checkChangedName) {
         oldObj.todoComplete = [];
         for(const prop of ticked){
