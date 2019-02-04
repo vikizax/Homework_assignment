@@ -1,6 +1,8 @@
 // global
 let userKey = [];
 let toggle = 0;
+let changeFlag = 0;
+let oldListName; 
 const emptyLiMsg = document.createElement("li");
 //jumbotron
 const jumbotron = document.querySelector(".jumbotron");
@@ -101,6 +103,21 @@ function createUserObj(fn, ln, ups){
     this.password = ups;
 }
 
+// Function exp to generate hash value for the password
+const hashPassword = (pass) => {
+    const bcrypt = dcodeIO.bcrypt;
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(pass, salt);
+    return hash;
+}
+
+// Function exp to check the user password with the hash value stored
+const checkPassword = (pass, hash) =>{
+    const bcrypt = dcodeIO.bcrypt;
+    return bcrypt.compareSync(pass, hash);
+}
+
+
 //Function exp to reset createNewToDos
 const resetCreateTodo = () => {
     //get the list
@@ -149,7 +166,8 @@ const uniqueMailCheck = (mail)=> {
 }
 
 //Function exp to get the list itme of the clicked list
-const displayUserClickedListItem = (obj)=> {
+const displayUserClickedListItem = (obj, mainObj)=> {
+    oldListName = obj.name;
     clickedListName.value = obj.name;
     for(const prop of obj.item) {
         const setLi = document.createElement("li");
@@ -162,6 +180,18 @@ const displayUserClickedListItem = (obj)=> {
         setLi.appendChild(setCheck);
         userCurrentListItem.appendChild(setLi);
     }
+
+    if(mainObj.todoState !== undefined) {
+        for(const prop of mainObj.todoState) {
+            if(obj.name === prop.name) {
+                const tickInit = userCurrentList.querySelectorAll("#checkIt");
+                for(i = 0; i < tickInit.length; i++) {
+                    tickInit[i].checked = prop.doneOrNot[i]
+                }
+                break;
+            }
+        }
+    }
 }
 
 
@@ -172,7 +202,7 @@ const displayUserTodoList = (e) => {
     const displayObj = JSON.parse(localStorage.getItem(userKey[0]));
     for(const prop of displayObj.todo) {
         if(prop.name === e.target.innerHTML) {
-            displayUserClickedListItem(prop);
+            displayUserClickedListItem(prop, displayObj);
             break;
         }
     }
@@ -258,7 +288,8 @@ const getSignUpDetails = () => {
     const userLname = sLName.value;
     const userEmail = sEmail.value;
     const userPassword = sPass.value;
-    
+    const hashedPass = hashPassword(userPassword);
+
     //check for unique mail
     const unique = uniqueMailCheck(userEmail);
 
@@ -267,7 +298,7 @@ const getSignUpDetails = () => {
             //email as key for localStorage, add it to userKey to use it get the current user details
             userKey.push(userEmail);
             //create the user object to store the details
-            const newUser = new createUserObj(userFname, userLname, userPassword);
+            const newUser = new createUserObj(userFname, userLname, hashedPass);
             //convert the object to string 
             const newUserJsonString = JSON.stringify(newUser);
             //store the obj, converted as string to localStorage
@@ -447,9 +478,11 @@ const validateAccSettingForm = () => {
     const accObj = JSON.parse(localStorage.getItem(userKey[0]));
     //get the user password
     const oldPass = accObj.password;
+    //send the user given pass to check if the hash matches for given password
+    const passNotHash = checkPassword(userAOPassword, oldPass);
 
     //check if the old password provide is correct 
-    if(userAOPassword === oldPass){
+    if(passNotHash){
         aOPassHelp.classList.add("hide");
         validAccNum += 1;
     } else {
@@ -512,12 +545,13 @@ const checkUserLogIn = (e) => {
     if(!userExist) {
         //user exist hide the validation msg
         lEmailHelp.classList.add("hide");
-        //retrive user password from the localStorage to check the validity
+        //retrive user hashed password from the localStorage to check the validity
         const userLoginObj =JSON.parse( localStorage.getItem(userLoginEmail));
         const userLoginObjPas = userLoginObj.password;
-
-        //check if password is correct
-        if(userLoginPass === userLoginObjPas) {
+        //sending hashed value and user given password to check if hash matches
+        const passNotHash = checkPassword(userLoginPass, userLoginObjPas)
+        //check if password is correct i.e hash matches true will be returned
+        if(passNotHash) {
             //password is correct hide the validation msg
             lPassHelp.classList.add("hide");
             userKey.push(userLoginEmail);
@@ -546,6 +580,7 @@ const createToDoMenuPage = () => {
     todo.classList.remove("hide");
     userCurrentList.classList.add("hide");
     resetUserCurrentListItem();
+    resetCreateTodo();
 }
 
 //adding event listener to dashboard create New To-Do
@@ -560,7 +595,14 @@ const userCurrentListPage = () => {
     userCurrentListItemDisplay.classList.add("hide");
     userList.classList.remove("hide");
     todo.classList.add("hide");
+    rename.classList.remove("btn-danger");
+    rename.classList.add("btn-info");
+    rename.innerText = "Rename";
+    clickedListName.disabled = "true";
+    toggle = 0;
     resetUserCurrentListItem();
+    resetCurrentTodo();
+    appendListName(JSON.parse(localStorage.getItem(userKey[0])));
 }
 
 //adding event listener to dashboard To-Do lists
@@ -583,7 +625,7 @@ const updateAccountDetails = () => {
     const userULname = aLName.value;
     const userUEmail = aEmail.value;
     const userUNPassword = aNPass.value;
-
+    const hashedPass = hashPassword(userUNPassword);
     //creating user obj get the details from the localStorage
     const accObj = JSON.parse(localStorage.getItem(userKey[0]));
     //deleting from localStorage
@@ -591,7 +633,7 @@ const updateAccountDetails = () => {
     //updating details obtained from the account setting form
     accObj.firstName = userUFname;
     accObj.lastName = userULname;
-    accObj.password = userUNPassword;
+    accObj.password = hashedPass;
     //remove the old key
     userKey.pop();
     //store the updated details in the localStorage
@@ -605,6 +647,7 @@ const updateAccountDetails = () => {
     accountSetting.classList.add("hide");
     //send the user back to dashbord after update
     dashboardPage();
+    userCurrentListPage();
 }
 //adding event listener to the myAccountForm
 myAccountForm.addEventListener("submit", (e) => {
@@ -621,6 +664,7 @@ myAccountForm.addEventListener("submit", (e) => {
 btnCancel.addEventListener("click",()=> {
     accountSetting.classList.add("hide");
     dashboardPage();
+    userCurrentListPage();
 });
 
 // Function exp to add new to-do
@@ -696,6 +740,7 @@ const createNewToDoList = () => {
                 //alert if the list name is not given alert
                 if(toDoListName.value === ""){
                     alert("Give a name to your To-Do list!");
+                    updateFlag = 0;
                     break;
                 }else {
                     //if the given list name is unique
@@ -732,6 +777,8 @@ const createNewToDoList = () => {
         resetCreateTodo();
         //display the name in the user current to do lists
         appendListName(todoObj, 1);
+        //changeFlag
+        changeFlag = 0;
     }
 }
 
@@ -742,39 +789,97 @@ toDoUndo.addEventListener("click", undoNewTodos);
 //adding event listener to the toDoCreate button in the dashboard
 toDoCreate.addEventListener("click", createNewToDoList);
 
-// Function exp to save the changes done to the existing list
-const saveChanges = () => {
-    let checkChangedName;
-    if(!clickedListName.disabled) {
-        console.log("I am here A");
-        const changedName = clickedListName.value;
-        checkChangedName = uniqueListName(changedName);
-        console.log(changedName);
-        console.log(checkChangedName);
-    } else {
-        console.log("I am here B");
-        checkChangedName = true;
-        console.log(checkChangedName);
-    }
-    const oldObj = JSON.parse(localStorage.getItem(userKey[0]));
-    const ticked = userCurrentListItem.querySelectorAll("#checkIt");
-    const changeObj = {
-        state: []
-    };
+// Function exp to save name
+const saveChangedName = (name)=> {
 
-    if(checkChangedName) {
-        oldObj.todoComplete = [];
-        for(const prop of ticked){
-            changeObj.state.push(prop.checked);
+    let changeIt = true;
+    const obj = JSON.parse(localStorage.getItem(userKey[0]));
+
+    for(const prop of obj.todo) {
+        console.log(prop.name);
+        if(prop.name === name) {
+            console.log("Found it");
+            alert("List Name already exist!");
+            changeIt = false;
+            break;
         }
-        oldObj.todoComplete.push(changeObj);
-        console.log(oldObj);
-    } else {
-        alert("List Name Already used");
     }
-    console.log(changeObj.state);
+    if(changeIt) {
+        alert("Name accepted!");
+        console.log(oldListName);
+        for(let i = 0; i< obj.todo.length; i++) {
+            if(obj.todo[i].name === oldListName) {
+                obj.todo[i].name = name;
+                localStorage.setItem(userKey[0], JSON.stringify(obj));
+                return changeIt;
+            }
+        }     
+    } else {
+        return changeIt;
+    }
 }
 
+//Function exp to save the check stats of the list
+const saveListStat = (name) => {
+
+    let statePlace;
+    const tick = userCurrentList.querySelectorAll("#checkIt");
+    const oldStatObj = JSON.parse(localStorage.getItem(userKey[0]));
+    // console.log("here ");
+    // console.log(oldStatObj);
+    for(let i = 0; i< oldStatObj.todo.length; i++) {
+        if(oldStatObj.todo[i].name === name) {
+            console.log("found it again!");
+            statePlace = i;
+            break;
+        }
+    }
+    
+    const stateObj = {
+        doneOrNot: []
+    };
+    stateObj.name = name;
+
+    for(i = 0; i < tick.length; i++) {
+        stateObj.doneOrNot.push(tick[i].checked)
+    }
+
+    if(oldStatObj.todoState === undefined){
+        oldStatObj.todoState = [];
+        oldStatObj.todoState.push(stateObj);
+        const putObjString = JSON.stringify(oldStatObj);
+        localStorage.setItem(userKey[0], putObjString);
+    } else {
+        if(oldStatObj.todoState[statePlace] === undefined) {
+            oldStatObj.todoState.push(stateObj)
+            const putObjString = JSON.stringify(oldStatObj);
+            localStorage.setItem(userKey[0], putObjString);
+
+        } else {
+            oldStatObj.todoState[statePlace] = stateObj;
+            localStorage.setItem(userKey[0], JSON.stringify(oldStatObj));
+        }
+    }
+    
+}
+
+// Function exp to save the changes done to the existing list
+const saveChanges = () => {
+
+    let getName = clickedListName.value;;
+    let next;
+    console.log(clickedListName.disabled);
+    if(!clickedListName.disabled) {
+        next = saveChangedName(getName);
+        if(next) {
+            saveListStat(getName);
+            alert("Saved!");
+        }
+    } else{
+        saveListStat(getName);
+        alert("Saved!");
+    }
+}
 
 //adding event listener to the back button in the userCurrentListItemDisplay
 back.addEventListener("click", userCurrentListPage);
