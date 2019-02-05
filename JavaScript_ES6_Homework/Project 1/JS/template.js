@@ -122,7 +122,7 @@ document.body.innerHTML = (`
             </div>
             <div class="form-group">
                 <label for="aNPass">Enter New ${passTxt}</label>
-                <input type="password" class="form-control" id="aNPass" placeholder="${passTxt}" >
+                <input type="password" class="form-control" id="aNPass" placeholder="New ${passTxt}" >
                 <small id="aNPassHelp" class="form-text text-danger hide"></small>
             </div>
             <div class="form-group text-center">
