@@ -1,3 +1,8 @@
+/*
+Homework Assignment #9 
+Template Literals
+*/
+
 //global
 let welcomeMsg = "Welcome to To-Do List";
 let btnLogIn = "Log-In";
