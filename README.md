@@ -11,7 +11,7 @@ JavaScript:
 6. Homework Assignment 6: loops.js
 7. Homework Assignment 7: dom.html
 8. Homework Assignment 8: Events/app (Tic-Tac-Toe Game)
-9. Project 1 (To-Do list)
+9. Project 1 (To-Do list with template) 
 -----------------------------------------------
 Python:
 1. Homework Assignment 1: main.py

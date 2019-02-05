@@ -1,3 +1,4 @@
+const startJs = () =>{
 // global
 let userKey = [];
 let toggle = 0;
@@ -901,3 +902,4 @@ rename.addEventListener("click", ()=> {
     }
     clickedListName.toggleAttribute("disabled");
 });
+}
