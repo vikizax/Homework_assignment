@@ -21,3 +21,4 @@ Python:
 4. Homework Assignment 4: lists.py
 5. Homework Assignment 5: fizzBuzz.py
 6. Homework Assignment 6: advanced_loops.py
+7. Homework Assignment 7: main_dict.py
