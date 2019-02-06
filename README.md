@@ -13,6 +13,7 @@ JavaScript:
 8. Homework Assignment 8: Events/app (Tic-Tac-Toe Game)
 9. Project 1 (To-Do list with template) 
 10. Homework Assignment 9: template.js
+11. Homework Assignment 10: destructuring.js
 -----------------------------------------------
 Python:
 1. Homework Assignment 1: main.py
