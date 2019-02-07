@@ -1,15 +1,15 @@
 /*
- Homework Assignment #4 
- Functions
+Homework Assignment #4 
+Functions
  */
 
  /*
- All men are mortal
- Socrates is a man
- Therefore, socrates is mortal.
+All men are mortal
+Socrates is a man
+Therefore, socrates is mortal.
  */
 
- 
+
 const namesArray = ["Socrates","Nicolas Flamel","Zusudra"];
 
 const isMortal = (name) => {
