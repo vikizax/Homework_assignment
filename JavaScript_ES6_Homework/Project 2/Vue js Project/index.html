@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>1v1 Fight!</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="css/foundation.min.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+    <div id="app">
+        <section class="row">
+            <div class="small-5 columns">
+                <h1 class="text-center player1">Player 1</h1>
+                <div class="healthbar">
+                    <div class="healthbar text-center" 
+                    style="background-color: green; margin: 0; color: white;"
+                    :style="{width: playerOneHealth + '%'}">
+                        {{ playerOneHealth }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="small-2 columns">
+                <h2 class="text-center">VS</h2>
+            </div>
+
+            <div class="small-5 columns">
+                <h1 class="text-center player2">Player 2</h1>
+                <div class="healthbar">
+                    <div class="healthbar text-center" 
+                    style="background-color: green; margin: 0; color: white;"
+                    :style="{width: playerTwoHealth + '%'}">
+                        {{ playerTwoHealth }}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="row controls" v-if="!gameIsRunning">
+            <div class="small-12 columns">
+                <button id="start-game" @click="startGame">START NEW GAME</button>
+            </div>
+        </section>
+
+        <section class="row controls" v-else>
+            <template v-if ="playTurn === 0">
+                <h2>Player 1</h2>
+                <p>Special Attack left: {{specialOne}}</p>
+            </template>
+            <template v-else>
+                <h2>Player 2</h2>
+                <p>Special Attack left: {{specialTwo}}</p>
+            </template>
+            <h2 v-else>Player 2</h2>
+            <div class="small-12 columns">
+                <button id="attack" 
+                @click="attack">ATTACK</button>
+
+                <!-- conditional special attack and heal button -->
+                <template v-if="playTurn === 0">
+                    <template v-if="specialOne > 0">
+                        <button id="special-attack" @click="specialAttack">SPECIAL ATTACK</button>   
+                    </template>
+                    <button id="heal" @click="heal" v-if="playerOneHealth < 100">HEAL</button>
+                </template>
+                <template v-else>
+                    <template v-if="specialTwo > 0">
+                        <button id="special-attack" @click="specialAttack">SPECIAL ATTACK</button>
+                    </template>
+                    <button id="heal" @click="heal" v-if="playerTwoHealth < 100">HEAL</button>
+                </template>
+
+                <button id="give-up" @click="endGame">END GAME</button>
+            </div>
+        </section>
+        <section class="row log" v-if="turns.length > 0">
+            <div class="small-12 columns">
+                <ul>
+                    <li v-for="turn in turns"                
+                        :class="{'player-turn':!turn.isPlayerOne,'monster-turn':turn.isPlayerOne}">
+                        {{ turn.text }}
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    <!-- script -->
+    <script src="app.js"></script>
+</body>
+</html>
