@@ -152,15 +152,15 @@ Planes.prototype.constructor = Planes;
 Planes.prototype.Flying = function() {
     this.isFlying = true;
     if(this.TripsSinceMaintenance < 100) { 
-        this.TripsSinceMaintenance ++;        
+        this.TripsSinceMaintenance ++;   
     } else {
-        this.NeedsMaintenance = true;
-    }
-    //return false if plane needs maintenance 
-    if(this.TripsSinceMaintenance > 100) {
         console.log("\nPlane can't fly until it's repaired");
         return false;
     }
+    if(this.TripsSinceMaintenance === 100) {
+        this.NeedsMaintenance = true;
+    }  
+
 }
 //landing
 Planes.prototype.Landing = function() {
@@ -183,7 +183,7 @@ console.log(
 //flying the plane
 plane1.Flying();
 console.log('isFlying: '+ plane1.isFlying);
-for(let i =1; i <=100; i++){
+for(let i =1; i <=99; i++){
     plane1.Flying();
 }
 //landing the plane
@@ -195,7 +195,6 @@ console.log("NeedsMaintenance: " + plane1.NeedsMaintenance);
 
 //see if we can fly the plane after NeedMaintenance is true
 plane1.Flying();
-
 
 //repair plane if NeedsMaintenance
 if(plane1.NeedsMaintenance === true) {
