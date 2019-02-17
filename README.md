@@ -16,7 +16,8 @@ JavaScript:
 11. Homework Assignment 10: destructuring.js
 12. Homework Assignment 11: exception.js
 13. Project 2 (libraries, frameworks)
-14. Homework Assignment 12: oop.js
+14. Homework Assignment 12: oop.md
+15. Homework Assignment 13: oop.js
 -----------------------------------------------
 Python:
 1. Homework Assignment 1: main.py
