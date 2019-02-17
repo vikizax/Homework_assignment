@@ -45,7 +45,7 @@ object:
     super class
     class Person{
         it will have
-        first name, last name and contact_no field
+        first name, last name and contact_no fields
     }
 
     class Student will inherit from Person {
@@ -54,7 +54,7 @@ object:
     }
 
     class Teacher will inherit from Person {
-        it will inculde super class field plus
+        it will inculde super class fields plus
         teacher_id_no field
     }
 
