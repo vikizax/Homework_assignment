@@ -1,4 +1,4 @@
-#Object Oriented Programming:
+Object Oriented Programming:
     
     OOP involves the use of classes and objects to design the program.
 
@@ -19,8 +19,7 @@
     OOP pattern would be a better solution, when we want to have multiple objects with same behaviour.
 
 
-#Example: school-management system
-    (simplified version)
+Example: school-management system(simplified version)
 
 object:
 - Student
@@ -28,19 +27,20 @@ object:
 - Teacher
         - includes teacher_id_no, name, contact details, ..any
 
-#User Stories:
+User Stories:
 
-When new student enrolls:
--id_no, name , and contact_no will be saved
-When new teaher is hired:
--id_no, name, and contact_no will be saved
+    When new student enrolls:
+    -id_no, name , and contact_no will be saved
+    When new teaher is hired:
+    -id_no, name, and contact_no will be saved
 
     Employess using the application will add the student/teacher details in the GUI provided
     and program behind the scene will create an object for each student/teacher and will save it.
 
     Later if any modfication is needed, say contact details need to be changed, Employee can Update the details from the GUI and this change will be affected to the particular object.
 
-#Pseudocode
+Pseudocode
+    
     super class
     class Person{
         it will have
