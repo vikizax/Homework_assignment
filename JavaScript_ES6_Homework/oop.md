@@ -37,7 +37,8 @@ User Stories:
     Employess using the application will add the student/teacher details in the GUI provided
     and program behind the scene will create an object for each student/teacher and will save it.
 
-    Later if any modfication is needed, say contact details need to be changed, Employee can Update the details from the GUI and this change will be affected to the particular object.
+    Later if any modfication is needed, say contact details need to be changed,
+    Employee can Update the details from the GUI and this change will be affected to the particular object.
 
 Pseudocode
     
