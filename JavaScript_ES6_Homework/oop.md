@@ -21,6 +21,7 @@
 
 #Example: school-management system
     (simplified version)
+
 object:
 - Student
         - inlcudes student_id_no, name, contact details, ..any
